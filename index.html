@@ -3,274 +3,287 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English Quest 2025</title>
+    <title>English Nebula 2025</title>
     <style>
-        /* Современный дизайн и переменные */
         :root {
-            --primary: #6366f1;
-            --primary-hover: #4f46e5;
+            --bg: #0f172a;
+            --glass: rgba(30, 41, 59, 0.7);
+            --accent: #8b5cf6;
+            --accent-glow: rgba(139, 92, 246, 0.5);
+            --text: #f1f5f9;
             --secondary: #10b981;
             --danger: #ef4444;
-            --warning: #f59e0b;
-            --bg: #f8fafc;
-            --card: #ffffff;
-            --text: #1e293b;
-            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Темная тема */
-        body.dark {
-            --bg: #0f172a;
-            --card: #1e293b;
-            --text: #f1f5f9;
-            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
         }
 
         body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background-color: var(--bg);
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background: radial-gradient(circle at top right, #1e1b4b, #0f172a);
             color: var(--text);
             margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            transition: all 0.3s ease;
+            overflow: hidden;
         }
 
+        /* Контейнер с эффектом стекла */
         .container {
-            background: var(--card);
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             width: 100%;
-            max-width: 450px;
-            padding: 2.5rem;
-            border-radius: 24px;
-            box-shadow: var(--shadow);
+            max-width: 480px;
+            padding: 2rem;
+            border-radius: 28px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             text-align: center;
             position: relative;
-            margin: 15px;
         }
 
-        /* Кнопка "Назад" в углу */
-        .back-btn {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: none;
-            border: none;
-            color: var(--text);
-            font-size: 1.2rem;
-            cursor: pointer;
-            opacity: 0.6;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
-        .back-btn:hover { opacity: 1; transform: translateX(-3px); }
 
-        h1 { font-size: 2rem; margin-bottom: 0.5rem; background: linear-gradient(to right, #6366f1, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-        .stats-row {
+        /* Статистика */
+        .stats-panel {
             display: flex;
             justify-content: space-between;
-            background: rgba(0,0,0,0.03);
-            padding: 12px 20px;
-            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px 20px;
+            border-radius: 20px;
             margin-bottom: 2rem;
-            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .grid {
+        .stat-val { color: var(--secondary); font-weight: bold; }
+
+        /* Сетка режимов */
+        .mode-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
         }
 
         button {
-            padding: 14px 20px;
+            padding: 16px;
             border: none;
-            border-radius: 12px;
+            border-radius: 16px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: white;
+            position: relative;
+            overflow: hidden;
         }
 
-        .btn-topic { background: var(--primary); color: white; }
-        .btn-topic:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4); }
+        .btn-mode {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-        .btn-check { background: var(--secondary); color: white; width: 100%; margin-top: 15px; }
-        .btn-hint { background: var(--warning); color: white; width: 100%; margin-top: 10px; }
+        .btn-mode:hover {
+            background: var(--accent);
+            box-shadow: 0 0 20px var(--accent-glow);
+            transform: translateY(-3px);
+        }
+
+        .btn-grammar {
+            grid-column: span 2;
+            background: linear-gradient(45deg, #6366f1, #8b5cf6);
+        }
+
+        /* Игровой процесс */
+        .word-display {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: 8px;
+            margin: 2rem 0;
+            color: #fff;
+            text-shadow: 0 0 15px var(--accent-glow);
+            text-transform: uppercase;
+        }
+
+        .grammar-display {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 25px;
+            border-radius: 20px;
+            font-size: 1.25rem;
+            margin: 2rem 0;
+            border-left: 4px solid var(--accent);
+        }
 
         input {
             width: 100%;
             box-sizing: border-box;
-            padding: 16px;
-            border: 2px solid #e2e8f0;
-            border-radius: 14px;
+            padding: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
             font-size: 1.1rem;
             text-align: center;
-            background: transparent;
-            color: var(--text);
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
             outline: none;
-            transition: 0.2s;
-        }
-        input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1); }
-
-        .word-box {
-            font-size: 2.5rem;
-            font-weight: 800;
-            letter-spacing: 6px;
-            margin: 2rem 0;
-            color: var(--primary);
-            text-transform: uppercase;
-            animation: fadeIn 0.5s ease;
+            margin-bottom: 15px;
         }
 
-        .grammar-box {
-            background: rgba(99, 102, 241, 0.05);
-            padding: 20px;
-            border-radius: 15px;
-            font-size: 1.2rem;
-            margin: 2rem 0;
-            line-height: 1.6;
-            border-left: 4px solid var(--primary);
+        input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.2);
         }
 
-        .shop-box {
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid #e2e8f0;
+        .action-btns { display: flex; flex-direction: column; gap: 10px; }
+        .btn-submit { background: var(--secondary); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); }
+        .btn-hint { background: #f59e0b; }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.9rem;
+            cursor: pointer;
         }
+        .back-link:hover { color: white; }
 
-        .skin-chips { display: flex; justify-content: center; gap: 8px; margin-top: 10px; }
-        .chip { font-size: 0.8rem; padding: 6px 12px; background: #e2e8f0; color: #475569; border-radius: 20px; }
-        body.dark .chip { background: #334155; color: #cbd5e1; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .hidden { display: none !important; }
-        #feedback { margin-top: 15px; font-weight: bold; min-height: 24px; }
+
+        /* Анимации */
+        @keyframes correct {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); background: var(--secondary); }
+            100% { transform: scale(1); }
+        }
+        .correct-anim { animation: correct 0.5s ease; }
     </style>
 </head>
 <body>
 
-<!-- ЭКРАН МЕНЮ -->
-<div id="screen-menu" class="container">
-    <h1>English Pro</h1>
-    <div class="stats-row">
-        <span>🪙 Монеты: <span id="menu-coins">0</span></span>
+<!-- МЕНЮ -->
+<div id="menu" class="container">
+    <h1>English Nebula</h1>
+    <div class="stats-panel">
+        <span>🪙 <span id="m-coins" class="stat-val">0</span></span>
         <span>2025 Edition</span>
     </div>
-    <p style="opacity: 0.7;">Выбери тему для тренировки:</p>
-    <div class="grid">
-        <button class="btn-topic" onclick="game.start('Jobs')">💼 Jobs</button>
-        <button class="btn-topic" onclick="game.start('Nature')">🌿 Nature</button>
-        <button class="btn-topic" onclick="game.start('Tourism')">✈️ Tourism</button>
-        <button class="btn-topic" onclick="game.start('Weather')">☁️ Weather</button>
-        <button class="btn-topic" onclick="game.start('Food')">🍕 Food</button>
-        <button class="btn-topic" style="background:#8b5cf6" onclick="game.start('Grammar')">📝 Grammar</button>
-    </div>
-    <div class="shop-box">
-        <div class="skin-chips">
-            <button class="chip" onclick="game.setSkin('default')">Light</button>
-            <button class="chip" onclick="game.buySkin('dark', 100)">Dark (100 🪙)</button>
-        </div>
+    <div class="mode-grid">
+        <button class="btn-mode" onclick="game.start('Jobs')">💼 Jobs</button>
+        <button class="btn-mode" onclick="game.start('Nature')">🌿 Nature</button>
+        <button class="btn-mode" onclick="game.start('Tourism')">✈️ Tourism</button>
+        <button class="btn-mode" onclick="game.start('Weather')">☁️ Weather</button>
+        <button class="btn-mode" onclick="game.start('Space')">🚀 Space</button>
+        <button class="btn-mode" onclick="game.start('Food')">🍕 Food</button>
+        <button class="btn-grammar" onclick="game.start('Grammar')">📝 Grammar Master</button>
     </div>
 </div>
 
-<!-- ЭКРАН ИГРЫ -->
-<div id="screen-game" class="container hidden">
-    <button class="back-btn" onclick="game.toMenu()">← Меню</button>
-    
-    <div class="stats-row" style="margin-top: 30px;">
-        <span id="label-topic">Topic</span>
-        <span>🪙 <span id="game-coins">0</span></span>
+<!-- ИГРА -->
+<div id="game" class="container hidden">
+    <div class="stats-panel">
+        <span id="game-topic" style="color: var(--accent); font-weight: bold;">Topic</span>
+        <span>🪙 <span id="g-coins" class="stat-val">0</span></span>
     </div>
 
-    <div id="display-area"></div>
-    <input type="text" id="user-input" placeholder="Введите ответ..." autocomplete="off">
+    <div id="quest-container"></div>
     
-    <button class="btn-check" onclick="game.check()">Проверить</button>
-    <button class="btn-hint" onclick="game.hint()">Подсказка (-15 🪙)</button>
+    <input type="text" id="answer" placeholder="Type your answer..." autocomplete="off">
+    
+    <div class="action-btns">
+        <button class="btn-submit" onclick="game.check()">Check Answer</button>
+        <button class="btn-hint" onclick="game.hint()">Get Hint (-15 🪙)</button>
+    </div>
 
-    <div id="feedback"></div>
+    <div id="feedback" style="margin-top: 15px; font-weight: bold; min-height: 20px;"></div>
+    
+    <a class="back-link" onclick="game.exit()">← Вернуться в меню</a>
 </div>
 
 <script>
-    const DB = {
-        "Jobs": ["architect", "engineer", "pharmacist", "journalist", "electrician", "detective", "scientist", "accountant", "surgeon", "pilot", "mechanic", "firefighter"],
-        "Nature": ["sustainability", "pollution", "recycling", "deforestation", "greenhouse", "biodiversity", "atmosphere", "ecosystem", "renewable", "glacier"],
-        "Tourism": ["itinerary", "sightseeing", "destination", "souvenir", "passport", "accommodation", "landmark", "excursion", "backpacking", "reservation"],
-        "Weather": ["thunderstorm", "humidity", "forecast", "blizzard", "hurricane", "drought", "temperature", "overcast", "lightning", "rainbow", "avalanche"],
-        "Food": ["ingredient", "delicious", "restaurant", "vegetable", "breakfast", "spaghetti", "cucumber", "chocolate", "dessert", "pineapple"],
+    const DATABASE = {
+        "Jobs": ["architect", "engineer", "pharmacist", "journalist", "electrician", "detective", "scientist", "accountant", "surgeon", "pilot"],
+        "Nature": ["sustainability", "pollution", "recycling", "deforestation", "greenhouse", "biodiversity", "atmosphere", "ecosystem", "renewable"],
+        "Tourism": ["itinerary", "sightseeing", "destination", "souvenir", "passport", "accommodation", "landmark", "excursion", "backpacking"],
+        "Weather": ["thunderstorm", "humidity", "forecast", "blizzard", "hurricane", "drought", "temperature", "overcast", "lightning"],
+        "Space": ["astronaut", "galaxy", "telescope", "constellation", "universe", "satellite", "asteroid", "eclipse", "orbit"],
+        "Food": ["ingredient", "delicious", "restaurant", "vegetable", "breakfast", "spaghetti", "cucumber", "chocolate", "dessert"],
         "Grammar": [
-            {q: "I ___ (be) a student.", a: "am"},
-            {q: "She ___ (go) to work every day.", a: "goes"},
-            {q: "They ___ (watch) TV now.", a: "are watching"},
-            {q: "I have ___ orange.", a: "an"},
-            {q: "He is ___ (tall) than me.", a: "taller"},
-            {q: "Last night I ___ (eat) pizza.", a: "ate"},
-            {q: "We ___ (not / like) rain.", a: "don't like"}
+            {q: "I ___ (be) a developer.", a: "am"},
+            {q: "She ___ (like) coding.", a: "likes"},
+            {q: "Look! They ___ (run).", a: "are running"},
+            {q: "I have ___ idea.", a: "an"},
+            {q: "He is ___ (fast) than me.", a: "faster"},
+            {q: "We ___ (not / go) there often.", a: "don't go"}
         ]
     };
 
     class EnglishGame {
         constructor() {
-            this.coins = parseInt(localStorage.getItem('coins')) || 0;
-            this.unlocked = JSON.parse(localStorage.getItem('skins')) || ['default'];
-            this.ans = "";
-            this.topic = "";
-            this.updateUI();
+            this.coins = parseInt(localStorage.getItem('nebula_coins')) || 0;
+            this.currentTopic = "";
+            this.currentAns = "";
+            this.updateStats();
         }
 
         start(topic) {
-            this.topic = topic;
-            document.getElementById('screen-menu').classList.add('hidden');
-            document.getElementById('screen-game').classList.remove('hidden');
-            document.getElementById('label-topic').innerText = topic;
+            this.currentTopic = topic;
+            document.getElementById('menu').classList.add('hidden');
+            document.getElementById('game').classList.remove('hidden');
+            document.getElementById('game-topic').innerText = topic;
             this.next();
         }
 
-        toMenu() {
-            document.getElementById('screen-menu').classList.remove('hidden');
-            document.getElementById('screen-game').classList.add('hidden');
+        exit() {
+            document.getElementById('menu').classList.remove('hidden');
+            document.getElementById('game').classList.add('hidden');
         }
 
         next() {
-            const area = document.getElementById('display-area');
-            const input = document.getElementById('user-input');
+            const container = document.getElementById('quest-container');
+            const input = document.getElementById('answer');
             input.value = "";
             input.focus();
             document.getElementById('feedback').innerText = "";
 
-            if (this.topic === 'Grammar') {
-                const item = DB.Grammar[Math.floor(Math.random() * DB.Grammar.length)];
-                this.ans = item.a;
-                area.innerHTML = `<div class="grammar-box">${item.q}</div>`;
+            if (this.currentTopic === "Grammar") {
+                const item = DATABASE.Grammar[Math.floor(Math.random() * DATABASE.Grammar.length)];
+                this.currentAns = item.a;
+                container.innerHTML = `<div class="grammar-display">${item.q}</div>`;
             } else {
-                const word = DB[this.topic][Math.floor(Math.random() * DB[this.topic].length)];
-                this.ans = word;
-                area.innerHTML = `<div class="word-box">${this.shuffle(word)}</div>`;
+                const words = DATABASE[this.currentTopic];
+                const word = words[Math.floor(Math.random() * words.length)];
+                this.currentAns = word;
+                container.innerHTML = `<div class="word-display">${this.scramble(word)}</div>`;
             }
         }
 
-        shuffle(w) {
-            let a = w.split("").sort(() => Math.random() - 0.5);
-            return a.join("") === w ? this.shuffle(w) : a.join("");
+        scramble(word) {
+            let a = word.split("").sort(() => Math.random() - 0.5);
+            return a.join("") === word ? this.scramble(word) : a.join("");
         }
 
         check() {
-            const val = document.getElementById('user-input').value.toLowerCase().trim();
+            const val = document.getElementById('answer').value.toLowerCase().trim();
             const f = document.getElementById('feedback');
-            if (val === this.ans.toLowerCase()) {
+            const cont = document.querySelector('#game');
+
+            if (val === this.currentAns.toLowerCase()) {
                 this.coins += 20;
+                f.innerText = "✨ Correct! +20 🪙";
                 f.style.color = "var(--secondary)";
-                f.innerText = "✨ Отлично! +20 монет";
+                cont.classList.add('correct-anim');
+                setTimeout(() => cont.classList.remove('correct-anim'), 500);
                 this.save();
-                setTimeout(() => this.next(), 1000);
+                setTimeout(() => this.next(), 1200);
             } else {
+                f.innerText = "❌ Try again!";
                 f.style.color = "var(--danger)";
-                f.innerText = "❌ Попробуй еще раз";
             }
         }
 
@@ -278,38 +291,29 @@
             if (this.coins >= 15) {
                 this.coins -= 15;
                 this.save();
-                alert(`Первая буква: ${this.ans[0].toUpperCase()}`);
+                alert(`The first letter is: ${this.currentAns[0].toUpperCase()}`);
             } else {
-                alert("Недостаточно монет!");
+                alert("Need 15 coins!");
             }
         }
 
-        buySkin(name, price) {
-            if (this.unlocked.includes(name)) return this.setSkin(name);
-            if (this.coins >= price) {
-                this.coins -= price;
-                this.unlocked.push(name);
-                this.save();
-                this.setSkin(name);
-            } else alert("Нужно больше монет!");
-        }
-
-        setSkin(n) { document.body.className = n === 'default' ? '' : n; }
-
         save() {
-            localStorage.setItem('coins', this.coins);
-            localStorage.setItem('skins', JSON.stringify(this.unlocked));
-            this.updateUI();
+            localStorage.setItem('nebula_coins', this.coins);
+            this.updateStats();
         }
 
-        updateUI() {
-            document.getElementById('menu-coins').innerText = this.coins;
-            document.getElementById('game-coins').innerText = this.coins;
+        updateStats() {
+            document.getElementById('m-coins').innerText = this.coins;
+            document.getElementById('g-coins').innerText = this.coins;
         }
     }
 
     const game = new EnglishGame();
-    document.getElementById('user-input').addEventListener('keypress', e => { if(e.key === 'Enter') game.check(); });
+
+    // Enter Key
+    document.getElementById('answer').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') game.check();
+    });
 </script>
 </body>
 </html>
