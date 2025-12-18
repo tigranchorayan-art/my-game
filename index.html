@@ -2,147 +2,493 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>English Master Game 2025</title>
-    <!-- Подключаем PyScript для работы Python в браузере -->
-    <link rel="stylesheet" href="pyscript.net" />
-    <script type="module" src="pyscript.net"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Master Pro 2025 - Educational Game</title>
+    <!-- 
+        Этот код имитирует сложную структуру Python-приложения.
+        Логика обработки слов и грамматики вынесена в массив данных (Data Set).
+    -->
     <style>
-        body { font-family: 'Arial', sans-serif; background: #f0f2f5; display: flex; justify-content: center; padding: 20px; }
-        #game-container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 600px; text-align: center; }
-        .stats { display: flex; justify-content: space-between; margin-bottom: 20px; font-weight: bold; color: #2c3e50; }
-        .word-box { font-size: 32px; letter-spacing: 5px; margin: 20px 0; color: #3498db; text-transform: uppercase; }
-        input { padding: 10px; font-size: 18px; border: 2px solid #ddd; border-radius: 5px; width: 70%; }
-        button { padding: 10px 20px; font-size: 16px; cursor: pointer; background: #2ecc71; color: white; border: none; border-radius: 5px; margin: 5px; }
-        button:hover { background: #27ae60; }
-        .hint-btn { background: #f1c40f; }
-        .shop { margin-top: 20px; padding-top: 20px; border-top: 2px solid #eee; }
-        .skin-active { border: 3px solid #e74c3c !important; }
+        :root {
+            --primary: #4a90e2;
+            --secondary: #2ecc71;
+            --danger: #e74c3c;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --gold: #f1c40f;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-color: #333;
+        }
+
+        body.dark-mode {
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --text-color: #e94560;
+            --light: #0f3460;
+        }
+
+        body.neon-mode {
+            --bg-color: #000;
+            --card-bg: #111;
+            --text-color: #39ff14;
+            --primary: #ff00ff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            transition: all 0.5s ease;
+        }
+
+        header {
+            width: 100%;
+            padding: 20px;
+            background: var(--dark);
+            color: white;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .container {
+            max-width: 800px;
+            width: 90%;
+            margin-top: 40px;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .stat-item {
+            background: var(--light);
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .word-display {
+            font-size: 3rem;
+            margin: 30px 0;
+            letter-spacing: 8px;
+            min-height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 3px dashed var(--primary);
+            text-transform: uppercase;
+        }
+
+        .grammar-display {
+            font-size: 1.5rem;
+            margin: 30px 0;
+            line-height: 1.6;
+        }
+
+        .input-group {
+            margin: 20px 0;
+        }
+
+        input[type="text"] {
+            width: 70%;
+            padding: 15px;
+            font-size: 1.2rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary);
+        }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+            margin: 5px;
+        }
+
+        .btn:active { transform: scale(0.95); }
+        .btn-check { background: var(--secondary); color: white; }
+        .btn-hint { background: var(--gold); color: white; }
+        .btn-skip { background: #95a5a6; color: white; }
+
+        .shop-container {
+            margin-top: 40px;
+            border-top: 2px solid #eee;
+            padding-top: 20px;
+        }
+
+        .skins-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .skin-card {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .skin-card:hover { background: var(--light); }
+        .locked { filter: grayscale(1); opacity: 0.7; }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 5px;
+            color: white;
+            display: none;
+            animation: slideIn 0.3s forwards;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        #level-progress {
+            width: 100%;
+            height: 10px;
+            background: #eee;
+            border-radius: 5px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        #level-fill {
+            width: 0%;
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
     </style>
 </head>
 <body>
 
-<div id="game-container">
-    <h1>Learn English 2025</h1>
-    
-    <div class="stats">
-        <div>Монеты: <span id="coins">0</span> 🪙</div>
-        <div>Тема: <span id="current-topic">Jobs</span></div>
+<header>
+    <h2>English Master 2025</h2>
+    <div>Уровень: <span id="lvl-display">1</span></div>
+    <div id="level-progress-cont" style="width: 200px;">
+        Прогресс XP:
+        <div id="level-progress"><div id="level-fill"></div></div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="stats-bar">
+        <div class="stat-item">🪙 Монеты: <span id="coins-display">0</span></div>
+        <div class="stat-item">🔥 Серия: <span id="streak-display">0</span></div>
+        <div class="stat-item">✅ Верно: <span id="correct-display">0</span></div>
+        <div class="stat-item">🏷 Тема: <span id="topic-display">-</span></div>
     </div>
 
-    <div id="quest-text">Разгадай слово (анаграмма):</div>
-    <div id="display-word" class="word-box">LOADING...</div>
-
-    <input type="text" id="user-input" placeholder="Введите ответ...">
-    <br>
-    <button onclick="check_answer()">Проверить</button>
-    <button class="hint-btn" onclick="get_hint()">Подсказка (10 🪙)</button>
+    <div id="task-description">Загрузка задания...</div>
     
-    <div id="message" style="margin-top: 15px; font-weight: bold;"></div>
+    <div id="game-area">
+        <!-- Сюда динамически вставляется слово или предложение -->
+        <div id="main-display" class="word-display">WORD</div>
+    </div>
 
-    <div class="shop">
-        <h3>Магазин скинов</h3>
-        <button onclick="buy_skin('Classic', 0)">Classic (Free)</button>
-        <button onclick="buy_skin('Neon', 50)">Neon (50 🪙)</button>
-        <button onclick="buy_skin('Dark', 100)">Dark Mode (100 🪙)</button>
+    <div class="input-group">
+        <input type="text" id="user-input" placeholder="Введите ваш ответ здесь..." autofocus>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn btn-check" id="check-btn">Проверить (Enter)</button>
+        <button class="btn btn-hint" id="hint-btn">Подсказка (-20 🪙)</button>
+        <button class="btn btn-skip" id="skip-btn">Пропустить</button>
+    </div>
+
+    <div class="shop-container">
+        <h3>🛒 Магазин скинов и улучшений</h3>
+        <div class="skins-grid">
+            <div class="skin-card" onclick="applySkin('default')">
+                <b>Classic</b><br>Бесплатно
+            </div>
+            <div class="skin-card" id="skin-dark" onclick="buySkin('dark', 150)">
+                <b>Deep Dark</b><br>💰 150
+            </div>
+            <div class="skin-card" id="skin-neon" onclick="buySkin('neon', 500)">
+                <b>Cyber Neon</b><br>💰 500
+            </div>
+        </div>
     </div>
 </div>
 
-<script type="py">
-import random
-from pyscript import document
+<div id="toast" class="toast"></div>
 
-# База данных слов и заданий
-DATA = {
-    "Jobs": ["engineer", "developer", "architect", "nurse", "scientist", "accountant", "lawyer"],
-    "Environment": ["pollution", "recycling", "sustainability", "wildlife", "atmosphere", "glacier"],
-    "Tourism": ["itinerary", "sightseeing", "destination", "souvenir", "passport", "adventure"],
-    "Weather": ["thunderstorm", "humidity", "forecast", "blizzard", "hurricane", "drought"],
-    "Grammar": [
-        {"q": "I ___ (to be) a student", "a": "am"},
-        {"q": "She ___ (to go) to work every day", "a": "goes"},
-        {"q": "They ___ (to watch) a movie now", "a": "are watching"},
-        {"q": "___ apple a day keeps the doctor away", "a": "an"}
+<script>
+/** 
+ * КОРПУС ДАННЫХ (DATABASE) 
+ * В реальном Python приложении это был бы отдельный JSON или SQL файл.
+ */
+const GAME_DATABASE = {
+    topics: {
+        "Jobs": [
+            "accountant", "architect", "astronomer", "blacksmith", "carpenter", "dentist", "detective",
+            "electrician", "engineer", "firefighter", "journalist", "librarian", "mechanic", "musician",
+            "nurse", "optician", "pharmacist", "photographer", "pilot", "plumber", "politician",
+            "programmer", "psychologist", "receptionist", "scientist", "surgeon", "translator", "veterinary"
+        ],
+        "Environment": [
+            "atmosphere", "biodiversity", "conservation", "deforestation", "drought", "ecosystem",
+            "emissions", "extinction", "fertilizer", "glacier", "greenhouse", "habitat", "hurricane",
+            "landfill", "pollution", "radiation", "recycling", "renewable", "sustainability", "wildlife"
+        ],
+        "Tourism": [
+            "accommodation", "adventure", "baggage", "booking", "brochure", "cathedral", "currency",
+            "customs", "destination", "excursion", "guidebook", "itinerary", "landmark", "monument",
+            "passport", "resort", "sightseeing", "souvenir", "suitcase", "tourist", "voyage"
+        ],
+        "Weather": [
+            "blizzard", "breeze", "cloudy", "cyclone", "drizzle", "forecast", "freezing", "humidity",
+            "lightning", "overcast", "rainbow", "scorching", "shivering", "thunderstorm", "tornado",
+            "typhoon", "weather", "whirlwind"
+        ],
+        "Science": [
+            "analysis", "bacteria", "cell", "chemical", "discovery", "experiment", "formula", "gravity",
+            "hypothesis", "laboratory", "molecule", "nucleus", "organism", "particle", "quantum", "theory"
+        ]
+    },
+    grammar: [
+        { q: "I ___ (to be) a student.", a: "am", hint: "Форма глагола to be для 'I'" },
+        { q: "She ___ (to go) to the gym every day.", a: "goes", hint: "Present Simple, 3-е лицо ед. число" },
+        { q: "We ___ (to watch) a great movie right now.", a: "are watching", hint: "Present Continuous" },
+        { q: "Have you ever ___ (to visit) London?", a: "visited", hint: "Present Perfect (V3)" },
+        { q: "This car is ___ (expensive) than mine.", a: "more expensive", hint: "Сравнительная степень" },
+        { q: "___ apple a day keeps the doctor away.", a: "an", hint: "Артикль перед гласной" },
+        { q: "If it rains, I ___ (to stay) at home.", a: "will stay", hint: "First Conditional" },
+        { q: "They ___ (to build) this house in 1990.", a: "built", hint: "Past Simple" },
+        { q: "He doesn't ___ (to like) coffee.", a: "like", hint: "После doesn't глагол без окончаний" },
+        { q: "There ___ (to be) some milk in the fridge.", a: "is", hint: "Milk - неисчисляемое" }
     ]
+};
+
+/**
+ * ИГРОВАЯ ЛОГИКА (ENGINE)
+ */
+class EnglishGame {
+    constructor() {
+        this.coins = parseInt(localStorage.getItem('eng_coins')) || 0;
+        this.xp = parseInt(localStorage.getItem('eng_xp')) || 0;
+        this.streak = 0;
+        this.correctCount = 0;
+        this.currentAnswer = "";
+        this.currentMode = ""; // 'anagram' or 'grammar'
+        this.unlockedSkins = JSON.parse(localStorage.getItem('eng_skins')) || ['default'];
+        
+        this.init();
+    }
+
+    init() {
+        this.updateUI();
+        this.nextQuestion();
+        
+        document.getElementById('check-btn').onclick = () => this.check();
+        document.getElementById('hint-btn').onclick = () => this.getHint();
+        document.getElementById('skip-btn').onclick = () => this.nextQuestion();
+        document.getElementById('user-input').onkeypress = (e) => {
+            if (e.key === 'Enter') this.check();
+        };
+    }
+
+    nextQuestion() {
+        const rand = Math.random();
+        // 70% слов, 30% грамматики
+        if (rand > 0.3) {
+            this.setupAnagram();
+        } else {
+            this.setupGrammar();
+        }
+        document.getElementById('user-input').value = "";
+        document.getElementById('user-input').focus();
+    }
+
+    setupAnagram() {
+        this.currentMode = "anagram";
+        const topics = Object.keys(GAME_DATABASE.topics);
+        const topic = topics[Math.floor(Math.random() * topics.length)];
+        const words = GAME_DATABASE.topics[topic];
+        const word = words[Math.floor(Math.random() * words.length)];
+        
+        this.currentAnswer = word;
+        document.getElementById('topic-display').innerText = topic;
+        document.getElementById('task-description').innerText = "Собери слово из букв:";
+        
+        const scrambled = this.scramble(word);
+        const display = document.getElementById('main-display');
+        display.className = "word-display";
+        display.innerText = scrambled;
+    }
+
+    setupGrammar() {
+        this.currentMode = "grammar";
+        const task = GAME_DATABASE.grammar[Math.floor(Math.random() * GAME_DATABASE.grammar.length)];
+        
+        this.currentAnswer = task.a;
+        this.currentHint = task.hint;
+        
+        document.getElementById('topic-display').innerText = "Grammar";
+        document.getElementById('task-description').innerText = "Заполни пропуск:";
+        
+        const display = document.getElementById('main-display');
+        display.className = "grammar-display";
+        display.innerText = task.q;
+    }
+
+    scramble(word) {
+        let a = word.split(""), n = a.length;
+        for(let i = n - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            let tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+        }
+        let res = a.join("");
+        return res === word ? this.scramble(word) : res;
+    }
+
+    check() {
+        const userVal = document.getElementById('user-input').value.toLowerCase().trim();
+        
+        if (userVal === this.currentAnswer.toLowerCase()) {
+            this.handleSuccess();
+        } else {
+            this.handleFailure();
+        }
+    }
+
+    handleSuccess() {
+        const reward = 15 + (this.streak * 2);
+        const xpGain = 10;
+        
+        this.coins += reward;
+        this.xp += xpGain;
+        this.streak++;
+        this.correctCount++;
+        
+        this.showToast(`✅ Верно! +${reward} 🪙 и +${xpGain} XP`, "var(--secondary)");
+        this.save();
+        this.updateUI();
+        
+        // Маленькая задержка перед следующим вопросом
+        setTimeout(() => this.nextQuestion(), 1000);
+    }
+
+    handleFailure() {
+        this.streak = 0;
+        this.showToast("❌ Ошибка. Попробуй еще раз!", "var(--danger)");
+        this.updateUI();
+        
+        // Визуальная встряска
+        const card = document.querySelector('.container');
+        card.style.transform = "translateX(10px)";
+        setTimeout(() => card.style.transform = "translateX(-10px)", 50);
+        setTimeout(() => card.style.transform = "translateX(0)", 100);
+    }
+
+    getHint() {
+        if (this.coins >= 20) {
+            this.coins -= 20;
+            if (this.currentMode === "anagram") {
+                this.showToast(`Подсказка: первая буква "${this.currentAnswer[0].toUpperCase()}"`, "var(--gold)");
+            } else {
+                this.showToast(`Подсказка: ${this.currentHint}`, "var(--gold)");
+            }
+            this.updateUI();
+            this.save();
+        } else {
+            this.showToast("Недостаточно монет!", "var(--danger)");
+        }
+    }
+
+    updateUI() {
+        document.getElementById('coins-display').innerText = this.coins;
+        document.getElementById('streak-display').innerText = this.streak;
+        document.getElementById('correct-display').innerText = this.correctCount;
+        
+        const level = Math.floor(this.xp / 100) + 1;
+        const currentLevelXp = this.xp % 100;
+        
+        document.getElementById('lvl-display').innerText = level;
+        document.getElementById('level-fill').style.width = currentLevelXp + "%";
+
+        // Проверка кнопок магазина
+        if (this.unlockedSkins.includes('dark')) document.getElementById('skin-dark').classList.remove('locked');
+        else document.getElementById('skin-dark').classList.add('locked');
+        
+        if (this.unlockedSkins.includes('neon')) document.getElementById('skin-neon').classList.remove('locked');
+        else document.getElementById('skin-neon').classList.add('locked');
+    }
+
+    showToast(text, color) {
+        const t = document.getElementById('toast');
+        t.innerText = text;
+        t.style.backgroundColor = color;
+        t.style.display = "block";
+        setTimeout(() => t.style.display = "none", 2500);
+    }
+
+    save() {
+        localStorage.setItem('eng_coins', this.coins);
+        localStorage.setItem('eng_xp', this.xp);
+        localStorage.setItem('eng_skins', JSON.stringify(this.unlockedSkins));
+    }
 }
 
-class Game:
-    def __init__(self):
-        self.coins = 0
-        self.current_word = ""
-        self.current_topic = ""
-        self.correct_answer = ""
-        self.mode = "anagram" # anagram or grammar
-        self.next_round()
+// Глобальные функции для магазина
+const game = new EnglishGame();
 
-    def next_round(self):
-        # Случайный выбор темы
-        self.current_topic = random.choice(list(DATA.keys()))
-        document.getElementById("current-topic").innerText = self.current_topic
-        
-        if self.current_topic == "Grammar":
-            item = random.choice(DATA["Grammar"])
-            self.correct_answer = item["a"]
-            display_text = item["q"]
-            document.getElementById("quest-text").innerText = "Заполни пропуск:"
-        else:
-            self.correct_answer = random.choice(DATA[self.current_topic])
-            # Перемешивание букв
-            scrambled = list(self.correct_answer)
-            random.shuffle(scrambled)
-            display_text = "".join(scrambled)
-            document.getElementById("quest-text").innerText = "Разгадай слово:"
+function buySkin(name, price) {
+    if (game.unlockedSkins.includes(name)) {
+        applySkin(name);
+        return;
+    }
 
-        document.getElementById("display-word").innerText = display_text
-        document.getElementById("user-input").value = ""
+    if (game.coins >= price) {
+        game.coins -= price;
+        game.unlockedSkins.push(name);
+        game.save();
+        game.updateUI();
+        applySkin(name);
+        game.showToast("Скин разблокирован!", "var(--secondary)");
+    } else {
+        game.showToast(`Нужно еще ${price - game.coins} 🪙`, "var(--danger)");
+    }
+}
 
-    def check(self, user_val):
-        if user_val.lower().strip() == self.correct_answer.lower():
-            self.coins += 15
-            self.update_ui("Правильно! +15 монет")
-            self.next_round()
-        else:
-            self.update_ui("Ошибка, попробуй еще раз!", "#e74c3c")
-
-    def update_ui(self, msg, color="#2ecc71"):
-        document.getElementById("coins").innerText = str(self.coins)
-        msg_el = document.getElementById("message")
-        msg_el.innerText = msg
-        msg_el.style.color = color
-
-game = Game()
-
-def check_answer(event=None):
-    val = document.getElementById("user-input").value
-    game.check(val)
-
-def get_hint(event=None):
-    if game.coins >= 10:
-        game.coins -= 10
-        hint = f"Первая буква: {game.correct_answer[0]}"
-        game.update_ui(hint, "#f39c12")
-    else:
-        game.update_ui("Недостаточно монет!", "#e74c3c")
-
-def buy_skin(name, price):
-    if game.coins >= price:
-        if name == "Neon":
-            document.getElementById("game-container").style.background = "#00ffcc"
-        elif name == "Dark":
-            document.getElementById("game-container").style.background = "#2c3e50"
-            document.getElementById("game-container").style.color = "white"
-        else:
-            document.getElementById("game-container").style.background = "white"
-            document.getElementById("game-container").style.color = "black"
-        
-        if price > 0: game.coins -= price
-        game.update_ui(f"Скин {name} применен!")
-    else:
-        game.update_ui("Нужно больше золота!", "#e74c3c")
-
-# Экспортируем функции в глобальную область JS
-window.check_answer = check_answer
-window.get_hint = get_hint
-window.buy_skin = buy_skin
+function applySkin(mode) {
+    document.body.className = "";
+    if (mode !== 'default') {
+        document.body.classList.add(mode + '-mode');
+    }
+}
 </script>
 
 </body>
