@@ -2,144 +2,97 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English Master Pro 2025</title>
+    <title>English Learning Pro 2025</title>
     <style>
-        :root {
-            --bg: #f0f2f5; --card: #ffffff; --text: #2c3e50;
-            --primary: #4a90e2; --secondary: #2ecc71; --gold: #f1c40f;
-        }
+        :root { --p: #6c5ce7; --bg: #f0f2f5; --txt: #2d3436; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--txt); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; transition: 0.3s; }
+        .container { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 400px; text-align: center; }
+        
+        /* Меню */
+        .menu-btn { width: 100%; padding: 12px; margin: 5px 0; border: none; border-radius: 10px; background: var(--p); color: white; cursor: pointer; font-weight: bold; }
+        .menu-btn:hover { filter: brightness(1.1); }
+
+        /* Игра */
+        .stats { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 20px; font-size: 14px; }
+        .word-display { font-size: 32px; letter-spacing: 5px; margin: 25px 0; color: var(--p); text-transform: uppercase; font-weight: bold; }
+        .grammar-text { font-size: 18px; margin: 25px 0; line-height: 1.4; color: #444; }
+        input { width: 80%; padding: 12px; border: 2px solid #ddd; border-radius: 10px; font-size: 18px; text-align: center; outline: none; }
+        
+        .action-btn { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; margin-top: 15px; font-weight: bold; }
+        .check { background: #2ecc71; color: white; width: 85%; }
+        .hint { background: #f1c40f; color: white; margin-right: 5px; }
+        
+        .hidden { display: none; }
+        #message { margin-top: 15px; font-weight: bold; min-height: 20px; }
+
         /* Скины */
-        body.dark { --bg: #1a1a2e; --card: #16213e; --text: #e94560; --primary: #0f3460; }
-        body.neon { --bg: #000; --card: #111; --text: #39ff14; --primary: #ff00ff; }
-
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); color: var(--text); margin: 0; transition: 0.5s; }
-        .hidden { display: none !important; }
-        
-        /* Главное меню */
-        #menu, #game-screen {
-            display: flex; flex-direction: column; align-items: center;
-            justify-content: center; min-height: 100vh; padding: 20px;
-        }
-
-        .container {
-            background: var(--card); padding: 30px; border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 100%; max-width: 500px; text-align: center;
-        }
-
-        .topic-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;
-        }
-
-        button {
-            padding: 15px; border: none; border-radius: 12px; cursor: pointer;
-            font-weight: bold; font-size: 16px; transition: 0.2s; background: var(--primary); color: white;
-        }
-        button:hover { opacity: 0.8; transform: translateY(-2px); }
-        .btn-topic { background: #5765f2; }
-        .btn-check { background: var(--secondary); width: 100%; margin-top: 10px; }
-        .btn-hint { background: var(--gold); margin-top: 5px; }
-
-        /* Игровые элементы */
-        .stats { display: flex; justify-content: space-between; width: 100%; margin-bottom: 20px; font-size: 14px; }
-        .word-box { font-size: 32px; letter-spacing: 5px; margin: 30px 0; text-transform: uppercase; font-weight: 900; }
-        .grammar-box { font-size: 18px; margin: 30px 0; line-height: 1.5; font-style: italic; }
-        input {
-            width: 90%; padding: 15px; border: 2px solid #ddd; border-radius: 10px;
-            font-size: 18px; text-align: center; outline: none;
-        }
-        
-        .xp-bar { width: 100%; height: 8px; background: #eee; border-radius: 4px; margin-top: 5px; overflow: hidden; }
-        #xp-fill { width: 0%; height: 100%; background: var(--secondary); transition: 0.5s; }
-
-        .shop { margin-top: 25px; border-top: 1px solid #eee; padding-top: 15px; }
+        .shop { margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px; }
+        .skin-dot { width: 20px; height: 20px; display: inline-block; border-radius: 50%; cursor: pointer; margin: 0 5px; border: 2px solid #ddd; }
     </style>
 </head>
 <body>
 
 <!-- ГЛАВНОЕ МЕНЮ -->
-<div id="menu">
-    <div class="container">
-        <h1>English Master 2025</h1>
-        <p>Выберите тему для изучения:</p>
-        <div class="topic-grid">
-            <button class="btn-topic" onclick="startGame('Jobs')">💼 Jobs</button>
-            <button class="btn-topic" onclick="startGame('Environment')">🌿 Nature</button>
-            <button class="btn-topic" onclick="startGame('Tourism')">✈️ Tourism</button>
-            <button class="btn-topic" onclick="startGame('Weather')">☁️ Weather</button>
-            <button class="btn-topic" onclick="startGame('Grammar')">📝 Grammar</button>
-            <button class="btn-topic" style="background: #e67e22;" onclick="startGame('Mixed')">🎲 Смешанный</button>
-        </div>
-    </div>
+<div id="main-menu" class="container">
+    <h1>English 2025</h1>
+    <p>Выберите тему:</p>
+    <button class="menu-btn" onclick="start('Jobs')">💼 Профессии (Jobs)</button>
+    <button class="menu-btn" onclick="start('Environment')">🌍 Природа (Environment)</button>
+    <button class="menu-btn" onclick="start('Tourism')">✈️ Туризм (Tourism)</button>
+    <button class="menu-btn" onclick="start('Weather')">☀️ Погода (Weather)</button>
+    <button class="menu-btn" onclick="start('Grammar')">📝 Грамматика (Grammar)</button>
 </div>
 
 <!-- ИГРОВОЙ ЭКРАН -->
-<div id="game-screen" class="hidden">
-    <div class="container">
-        <div class="stats">
-            <div>🪙 <span id="coins">0</span></div>
-            <div style="text-align: right;">
-                Ур. <span id="lvl">1</span>
-                <div class="xp-bar"><div id="xp-fill"></div></div>
-            </div>
-        </div>
+<div id="game-screen" class="container hidden">
+    <div class="stats">
+        <span>🪙 Монеты: <span id="coins">0</span></span>
+        <span>Тема: <span id="current-topic">...</span></span>
+    </div>
 
-        <div id="quest-label" style="color: gray; font-size: 14px;">Разгадай слово:</div>
-        <div id="display-area"></div>
+    <div id="task-text" style="color: #666; font-size: 14px;">Разгадай слово:</div>
+    <div id="display-area"></div>
 
-        <input type="text" id="user-input" placeholder="Введите ответ..." autocomplete="off">
-        <button class="btn-check" onclick="check()">Проверить</button>
-        <button class="btn-hint" onclick="getHint()">Подсказка (-15 🪙)</button>
-        <button onclick="backToMenu()" style="background:none; color:gray; font-size:12px; margin-top:15px;">⬅ Назад в меню</button>
+    <input type="text" id="user-input" placeholder="Ваш ответ..." autocomplete="off">
+    <button class="action-btn check" onclick="checkAnswer()">ПРОВЕРИТЬ</button>
+    <br>
+    <button class="action-btn hint" onclick="useHint()">Подсказка (-15 🪙)</button>
+    <button class="action-btn" onclick="location.reload()" style="background:#95a5a6; color:white;">В МЕНЮ</button>
 
-        <div class="shop">
-            <p style="font-size:12px;">Скины:</p>
-            <button onclick="setSkin('default')" style="font-size:10px; background:#95a5a6;">Светлый</button>
-            <button onclick="buySkin('dark', 100)" style="font-size:10px; background:#2c3e50;">Тёмный (100)</button>
-            <button onclick="buySkin('neon', 300)" style="font-size:10px; background:#ff00ff;">Неон (300)</button>
-        </div>
+    <div id="message"></div>
+
+    <div class="shop">
+        <span style="font-size: 12px;">Скины (50 🪙):</span><br>
+        <span class="skin-dot" style="background: white;" onclick="changeSkin('white', '#2d3436')"></span>
+        <span class="skin-dot" style="background: #2d3436;" onclick="changeSkin('#2d3436', 'white', 50)"></span>
+        <span class="skin-dot" style="background: #fab1a0;" onclick="changeSkin('#fab1a0', '#2d3436', 50)"></span>
     </div>
 </div>
 
 <script>
-    // БАЗА ДАННЫХ (более 150 слов и правил)
-    const DATA = {
-        "Jobs": ["architect", "engineer", "pharmacist", "programmer", "journalist", "electrician", "detective", "scientist", "accountant", "surgeon", "pilot", "waiter", "librarian", "mechanic", "plumber"],
-        "Environment": ["sustainability", "pollution", "recycling", "deforestation", "greenhouse", "biodiversity", "atmosphere", "ecosystem", "renewable", "wildlife", "glacier", "radiation"],
-        "Tourism": ["itinerary", "sightseeing", "destination", "souvenir", "passport", "accommodation", "landmark", "excursion", "backpacking", "reservation", "departure", "adventure"],
-        "Weather": ["thunderstorm", "humidity", "forecast", "blizzard", "hurricane", "drought", "temperature", "overcast", "lightning", "rainbow", "shivering", "scorching"],
+    // БАЗА ДАННЫХ
+    const DB = {
+        "Jobs": ["engineer", "developer", "architect", "surgeon", "pharmacist", "journalist", "accountant", "plumber", "electrician", "waiter", "scientist", "lawyer", "pilot", "nurse", "artist"],
+        "Environment": ["pollution", "sustainability", "recycling", "ecosystem", "deforestation", "glacier", "renewable", "atmosphere", "wildlife", "greenhouse", "biodiversity", "ecology"],
+        "Tourism": ["itinerary", "sightseeing", "destination", "souvenir", "passport", "accommodation", "landmark", "excursion", "backpacking", "reservation", "adventure", "booking"],
+        "Weather": ["thunderstorm", "humidity", "forecast", "blizzard", "hurricane", "drought", "temperature", "overcast", "lightning", "rainbow", "freezing", "scorching"],
         "Grammar": [
             {q: "I ___ (be) a student", a: "am"},
-            {q: "She ___ (go) to work every day", a: "goes"},
-            {q: "They ___ (be) watching TV now", a: "are"},
-            {q: "Look! The bird ___ (fly)", a: "is flying"},
-            {q: "I have ___ apple", a: "an"},
-            {q: "He is ___ (tall) than me", a: "taller"},
-            {q: "This is the ___ (big) house", a: "biggest"},
-            {q: "We ___ (not / like) milk", a: "don't like"},
-            {q: "___ you like pizza?", a: "do"},
-            {q: "Yesterday I ___ (see) a ghost", a: "saw"}
+            {q: "She ___ (go) to school every day", a: "goes"},
+            {q: "They ___ (watch) TV now", a: "are watching"},
+            {q: "___ apple a day keeps the doctor away", a: "an"},
+            {q: "He is ___ (good) than me", a: "better"},
+            {q: "We ___ (not / like) winter", a: "don't like"},
+            {q: "Look! The cat ___ (sleep)", a: "is sleeping"}
         ]
     };
 
-    let state = {
-        coins: 0, xp: 0, lvl: 1, 
-        currentTopic: "", currentAns: "", 
-        isGrammar: false, skins: ['default']
-    };
+    let coins = 0;
+    let currentTopic = "";
+    let correctAnswer = "";
+    let isGrammar = false;
 
-    function startGame(topic) {
-        state.currentTopic = topic;
-        document.getElementById('menu').classList.add('hidden');
-        document.getElementById('game-screen').classList.remove('hidden');
-        nextQuestion();
-    }
-
-    function backToMenu() {
-        document.getElementById('menu').classList.remove('hidden');
-        document.getElementById('game-screen').classList.add('hidden');
-    }
-
+    // Функция перемешивания (как shuffle в Python)
     function scramble(word) {
         let a = word.split(""), n = a.length;
         for(let i = n - 1; i > 0; i--) {
@@ -149,79 +102,83 @@
         return a.join("") === word ? scramble(word) : a.join("");
     }
 
+    function start(topic) {
+        currentTopic = topic;
+        document.getElementById('main-menu').classList.add('hidden');
+        document.getElementById('game-screen').classList.remove('hidden');
+        document.getElementById('current-topic').innerText = topic;
+        nextQuestion();
+    }
+
     function nextQuestion() {
-        let topic = state.currentTopic;
-        if (topic === 'Mixed') {
-            const keys = Object.keys(DATA);
-            topic = keys[Math.floor(Math.random() * keys.length)];
-        }
-
         const area = document.getElementById('display-area');
-        const label = document.getElementById('quest-label');
-        document.getElementById('user-input').value = "";
+        const task = document.getElementById('task-text');
+        const input = document.getElementById('user-input');
+        const msg = document.getElementById('message');
+        
+        input.value = "";
+        msg.innerText = "";
 
-        if (topic === 'Grammar') {
-            state.isGrammar = true;
-            const item = DATA.Grammar[Math.floor(Math.random() * DATA.Grammar.length)];
-            state.currentAns = item.a;
-            label.innerText = "Грамматика (вставь слово):";
-            area.innerHTML = `<div class="grammar-box">${item.q}</div>`;
+        if (currentTopic === "Grammar") {
+            isGrammar = true;
+            let item = DB.Grammar[Math.floor(Math.random() * DB.Grammar.length)];
+            correctAnswer = item.a;
+            task.innerText = "Заполни пропуск (правильная форма):";
+            area.innerHTML = `<div class="grammar-text">${item.q}</div>`;
         } else {
-            state.isGrammar = false;
-            const words = DATA[topic];
-            state.currentAns = words[Math.floor(Math.random() * words.length)];
-            label.innerText = `Тема: ${topic}. Разгадай анаграмму:`;
-            area.innerHTML = `<div class="word-box">${scramble(state.currentAns)}</div>`;
+            isGrammar = false;
+            let word = DB[currentTopic][Math.floor(Math.random() * DB[currentTopic].length)];
+            correctAnswer = word;
+            task.innerText = "Разгадай слово (анаграмма):";
+            area.innerHTML = `<div class="word-display">${scramble(word)}</div>`;
         }
     }
 
-    function check() {
-        const input = document.getElementById('user-input').value.toLowerCase().trim();
-        if (input === state.currentAns.toLowerCase()) {
-            state.coins += 20;
-            state.xp += 25;
-            if (state.xp >= 100) { state.lvl++; state.xp = 0; }
-            updateUI();
-            nextQuestion();
+    function checkAnswer() {
+        const val = document.getElementById('user-input').value.toLowerCase().trim();
+        const msg = document.getElementById('message');
+
+        if (val === correctAnswer.toLowerCase()) {
+            coins += 20;
+            document.getElementById('coins').innerText = coins;
+            msg.style.color = "#2ecc71";
+            msg.innerText = "ВЕРНО! +20 🪙";
+            setTimeout(nextQuestion, 1200);
         } else {
-            alert("Неверно! Попробуй еще раз.");
+            msg.style.color = "#e74c3c";
+            msg.innerText = "НЕПРАВИЛЬНО!";
         }
     }
 
-    function getHint() {
-        if (state.coins >= 15) {
-            state.coins -= 15;
-            updateUI();
-            alert("Первая буква: " + state.currentAns[0].toUpperCase());
+    function useHint() {
+        if (coins >= 15) {
+            coins -= 15;
+            document.getElementById('coins').innerText = coins;
+            alert("Подсказка: первая буква — " + correctAnswer[0].toUpperCase());
         } else {
-            alert("Мало монет!");
+            alert("Недостаточно монет!");
         }
     }
 
-    function updateUI() {
-        document.getElementById('coins').innerText = state.coins;
-        document.getElementById('lvl').innerText = state.lvl;
-        document.getElementById('xp-fill').style.width = state.xp + "%";
+    function changeSkin(bg, txt, price = 0) {
+        if (coins >= price) {
+            if (price > 0) coins -= price;
+            document.getElementById('coins').innerText = coins;
+            document.body.style.background = bg;
+            document.querySelectorAll('.container').forEach(c => {
+                c.style.background = (bg === 'white') ? 'white' : '#1e272e';
+                c.style.color = txt;
+            });
+        } else {
+            alert("Нужно 50 монет!");
+        }
     }
 
-    function buySkin(name, price) {
-        if (state.skins.includes(name)) { setSkin(name); return; }
-        if (state.coins >= price) {
-            state.coins -= price;
-            state.skins.push(name);
-            updateUI();
-            setSkin(name);
-        } else { alert("Недостаточно монет!"); }
-    }
-
-    function setSkin(name) {
-        document.body.className = name === 'default' ? '' : name;
-    }
-
-    // Обработка нажатия Enter
-    document.getElementById('user-input').addEventListener('keypress', e => {
-        if (e.key === 'Enter') check();
+    // Слушатель нажатия Enter
+    document.getElementById('user-input').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') checkAnswer();
     });
 </script>
+
 </body>
 </html>
