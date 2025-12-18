@@ -3,231 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English Nebula 2025</title>
+    <title>English Universe 2025</title>
     <style>
         :root {
-            --bg: #0f172a;
-            --glass: rgba(30, 41, 59, 0.7);
-            --accent: #8b5cf6;
-            --accent-glow: rgba(139, 92, 246, 0.5);
-            --text: #f1f5f9;
-            --secondary: #10b981;
-            --danger: #ef4444;
+            --bg: #050a18; --card: rgba(16, 24, 48, 0.9);
+            --accent: #00d2ff; --accent-2: #9d50bb;
+            --text: #e0e6ed; --success: #00f2fe;
         }
 
         body {
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            background: radial-gradient(circle at top right, #1e1b4b, #0f172a);
-            color: var(--text);
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
+            font-family: 'Segoe UI', sans-serif; background: var(--bg);
+            color: var(--text); margin: 0; display: flex; justify-content: center; min-height: 100vh;
+            background-image: radial-gradient(circle at 50% 50%, #101a32 0%, #050a18 100%);
         }
 
-        /* Контейнер с эффектом стекла */
         .container {
-            background: var(--glass);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            width: 100%;
-            max-width: 480px;
-            padding: 2rem;
-            border-radius: 28px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            text-align: center;
-            position: relative;
+            width: 100%; max-width: 500px; padding: 20px; text-align: center;
         }
 
-        h1 {
-            font-size: 2.2rem;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(to right, #a78bfa, #f472b6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        /* Glassmorphism */
+        .glass {
+            background: var(--card); backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 25px; padding: 25px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
         }
 
-        /* Статистика */
-        .stats-panel {
-            display: flex;
-            justify-content: space-between;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 15px 20px;
-            border-radius: 20px;
-            margin-bottom: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
+        h1 { background: linear-gradient(to right, var(--accent), var(--accent-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2.5rem; margin-bottom: 10px; }
 
-        .stat-val { color: var(--secondary); font-weight: bold; }
+        .stats-bar { display: flex; justify-content: space-between; margin-bottom: 20px; font-weight: bold; color: var(--accent); }
 
-        /* Сетка режимов */
-        .mode-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
+        /* Modes */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         button {
-            padding: 16px;
-            border: none;
-            border-radius: 16px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            color: white;
-            position: relative;
-            overflow: hidden;
+            padding: 15px; border: none; border-radius: 15px; cursor: pointer;
+            font-weight: bold; transition: 0.3s; background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.1);
         }
+        button:hover { background: var(--accent); color: black; transform: translateY(-3px); box-shadow: 0 0 15px var(--accent); }
 
-        .btn-mode {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+        .gift-btn { background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%); grid-column: span 2; margin-top: 10px; }
 
-        .btn-mode:hover {
-            background: var(--accent);
-            box-shadow: 0 0 20px var(--accent-glow);
-            transform: translateY(-3px);
-        }
-
-        .btn-grammar {
-            grid-column: span 2;
-            background: linear-gradient(45deg, #6366f1, #8b5cf6);
-        }
-
-        /* Игровой процесс */
-        .word-display {
-            font-size: 2.8rem;
-            font-weight: 800;
-            letter-spacing: 8px;
-            margin: 2rem 0;
-            color: #fff;
-            text-shadow: 0 0 15px var(--accent-glow);
-            text-transform: uppercase;
-        }
-
-        .grammar-display {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 25px;
-            border-radius: 20px;
-            font-size: 1.25rem;
-            margin: 2rem 0;
-            border-left: 4px solid var(--accent);
-        }
-
+        /* Game Areas */
+        .word-display { font-size: 2.5rem; margin: 30px 0; letter-spacing: 5px; color: var(--success); text-shadow: 0 0 10px var(--success); }
         input {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 18px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 18px;
-            font-size: 1.1rem;
-            text-align: center;
-            background: rgba(0, 0, 0, 0.2);
-            color: white;
-            outline: none;
-            margin-bottom: 15px;
+            width: 100%; padding: 15px; border-radius: 12px; border: none; background: rgba(0,0,0,0.3);
+            color: white; font-size: 1.2rem; text-align: center; outline: none; margin-bottom: 15px;
         }
 
-        input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.2);
-        }
-
-        .action-btns { display: flex; flex-direction: column; gap: 10px; }
-        .btn-submit { background: var(--secondary); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); }
-        .btn-hint { background: #f59e0b; }
-
-        .back-link {
-            display: inline-block;
-            margin-top: 20px;
-            color: #94a3b8;
-            text-decoration: none;
-            font-size: 0.9rem;
-            cursor: pointer;
-        }
-        .back-link:hover { color: white; }
+        /* Matching Game Style */
+        .match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 20px 0; }
+        .match-item { padding: 10px; border: 1px solid var(--accent); border-radius: 8px; cursor: pointer; font-size: 0.9rem; }
+        .selected { background: var(--accent) !important; color: black; }
 
         .hidden { display: none !important; }
+        #feedback { font-weight: bold; margin: 10px 0; height: 20px; }
 
-        /* Анимации */
-        @keyframes correct {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); background: var(--secondary); }
-            100% { transform: scale(1); }
-        }
-        .correct-anim { animation: correct 0.5s ease; }
+        /* Animations */
+        @keyframes openGift { 0% { transform: scale(1); } 50% { transform: scale(1.2) rotate(5deg); } 100% { transform: scale(1); } }
+        .anim-gift { animation: openGift 0.5s infinite; }
     </style>
 </head>
 <body>
 
-<!-- МЕНЮ -->
-<div id="menu" class="container">
-    <h1>English Nebula</h1>
-    <div class="stats-panel">
-        <span>🪙 <span id="m-coins" class="stat-val">0</span></span>
-        <span>2025 Edition</span>
-    </div>
-    <div class="mode-grid">
-        <button class="btn-mode" onclick="game.start('Jobs')">💼 Jobs</button>
-        <button class="btn-mode" onclick="game.start('Nature')">🌿 Nature</button>
-        <button class="btn-mode" onclick="game.start('Tourism')">✈️ Tourism</button>
-        <button class="btn-mode" onclick="game.start('Weather')">☁️ Weather</button>
-        <button class="btn-mode" onclick="game.start('Space')">🚀 Space</button>
-        <button class="btn-mode" onclick="game.start('Food')">🍕 Food</button>
-        <button class="btn-grammar" onclick="game.start('Grammar')">📝 Grammar Master</button>
-    </div>
-</div>
-
-<!-- ИГРА -->
-<div id="game" class="container hidden">
-    <div class="stats-panel">
-        <span id="game-topic" style="color: var(--accent); font-weight: bold;">Topic</span>
-        <span>🪙 <span id="g-coins" class="stat-val">0</span></span>
+<div class="container">
+    <!-- MENU -->
+    <div id="menu" class="glass">
+        <h1>UNIVERSE</h1>
+        <div class="stats-bar">
+            <span>🪙 <span id="m-coins">0</span></span>
+            <span>🏆 <span id="m-lvl">1</span> LVL</span>
+        </div>
+        <p>Выберите режим обучения:</p>
+        <div class="grid">
+            <button onclick="game.start('Jobs')">💼 Jobs</button>
+            <button onclick="game.start('Nature')">🌿 Nature</button>
+            <button onclick="game.start('Tourism')">✈️ Tourism</button>
+            <button onclick="game.start('Weather')">☁️ Weather</button>
+            <button onclick="game.start('Match')">🧩 Matching (New)</button>
+            <button onclick="game.start('Grammar')">📝 Grammar</button>
+            <button class="gift-btn" onclick="game.openGift()">🎁 Открыть Подарок (50 🪙)</button>
+        </div>
     </div>
 
-    <div id="quest-container"></div>
-    
-    <input type="text" id="answer" placeholder="Type your answer..." autocomplete="off">
-    
-    <div class="action-btns">
-        <button class="btn-submit" onclick="game.check()">Check Answer</button>
-        <button class="btn-hint" onclick="game.hint()">Get Hint (-15 🪙)</button>
-    </div>
+    <!-- GAME SCREEN -->
+    <div id="game" class="glass hidden">
+        <div class="stats-bar">
+            <span id="topic-title">Topic</span>
+            <span>🪙 <span id="g-coins">0</span></span>
+        </div>
 
-    <div id="feedback" style="margin-top: 15px; font-weight: bold; min-height: 20px;"></div>
-    
-    <a class="back-link" onclick="game.exit()">← Вернуться в меню</a>
+        <div id="game-content">
+            <!-- Сюда вставляется контент режима -->
+        </div>
+
+        <div id="input-area">
+            <input type="text" id="answer" placeholder="Ваш ответ..." autocomplete="off">
+            <button style="width: 100%; background: var(--success); color: black;" onclick="game.check()">ПРОВЕРИТЬ</button>
+        </div>
+
+        <div id="feedback"></div>
+        <button style="margin-top: 20px; background: none; border: none; color: gray;" onclick="game.toMenu()">← В меню</button>
+    </div>
 </div>
 
 <script>
-    const DATABASE = {
-        "Jobs": ["architect", "engineer", "pharmacist", "journalist", "electrician", "detective", "scientist", "accountant", "surgeon", "pilot"],
-        "Nature": ["sustainability", "pollution", "recycling", "deforestation", "greenhouse", "biodiversity", "atmosphere", "ecosystem", "renewable"],
-        "Tourism": ["itinerary", "sightseeing", "destination", "souvenir", "passport", "accommodation", "landmark", "excursion", "backpacking"],
-        "Weather": ["thunderstorm", "humidity", "forecast", "blizzard", "hurricane", "drought", "temperature", "overcast", "lightning"],
-        "Space": ["astronaut", "galaxy", "telescope", "constellation", "universe", "satellite", "asteroid", "eclipse", "orbit"],
-        "Food": ["ingredient", "delicious", "restaurant", "vegetable", "breakfast", "spaghetti", "cucumber", "chocolate", "dessert"],
+    const DB = {
+        "Jobs": ["accountant", "architect", "electrician", "engineer", "firefighter", "journalist", "librarian", "mechanic", "nurse", "pharmacist", "plumber", "programmer", "scientist", "surgeon", "translator", "veterinarian"],
+        "Nature": ["atmosphere", "biodiversity", "conservation", "deforestation", "ecosystem", "emissions", "extinction", "glacier", "greenhouse", "habitat", "pollution", "recycling", "renewable", "sustainability"],
+        "Tourism": ["accommodation", "adventure", "booking", "destination", "excursion", "guidebook", "itinerary", "landmark", "passport", "reservation", "sightseeing", "souvenir", "voyage"],
+        "Weather": ["avalanche", "blizzard", "drought", "forecast", "humidity", "hurricane", "lightning", "overcast", "rainbow", "scorching", "thunderstorm", "tornado", "typhoon"],
+        "Match": [
+            {e: "Environment", r: "Окружающая среда"}, {e: "Government", r: "Правительство"},
+            {e: "Experience", r: "Опыт"}, {e: "Improvement", r: "Улучшение"},
+            {e: "Knowledge", r: "Знания"}, {e: "Responsibility", r: "Ответственность"}
+        ],
         "Grammar": [
-            {q: "I ___ (be) a developer.", a: "am"},
-            {q: "She ___ (like) coding.", a: "likes"},
-            {q: "Look! They ___ (run).", a: "are running"},
-            {q: "I have ___ idea.", a: "an"},
-            {q: "He is ___ (fast) than me.", a: "faster"},
-            {q: "We ___ (not / go) there often.", a: "don't go"}
+            {q: "I ___ (study) English now.", a: "am studying"},
+            {q: "She ___ (have) a car last year.", a: "had"},
+            {q: "If it ___ (rain), we will stay.", a: "rains"},
+            {q: "He is the ___ (good) player.", a: "best"},
+            {q: "They ___ (finish) just now.", a: "have finished"}
         ]
     };
 
-    class EnglishGame {
+    class EnglishUniverse {
         constructor() {
-            this.coins = parseInt(localStorage.getItem('nebula_coins')) || 0;
+            this.coins = parseInt(localStorage.getItem('uni_coins')) || 0;
+            this.lvl = parseInt(localStorage.getItem('uni_lvl')) || 1;
             this.currentTopic = "";
-            this.currentAns = "";
+            this.ans = "";
+            this.selectedMatch = null;
             this.updateStats();
         }
 
@@ -235,85 +139,117 @@
             this.currentTopic = topic;
             document.getElementById('menu').classList.add('hidden');
             document.getElementById('game').classList.remove('hidden');
-            document.getElementById('game-topic').innerText = topic;
+            document.getElementById('topic-title').innerText = topic;
             this.next();
         }
 
-        exit() {
+        toMenu() {
             document.getElementById('menu').classList.remove('hidden');
             document.getElementById('game').classList.add('hidden');
         }
 
         next() {
-            const container = document.getElementById('quest-container');
-            const input = document.getElementById('answer');
-            input.value = "";
-            input.focus();
-            document.getElementById('feedback').innerText = "";
+            const content = document.getElementById('game-content');
+            const inputArea = document.getElementById('input-area');
+            inputArea.classList.remove('hidden');
+            document.getElementById('answer').value = "";
 
-            if (this.currentTopic === "Grammar") {
-                const item = DATABASE.Grammar[Math.floor(Math.random() * DATABASE.Grammar.length)];
-                this.currentAns = item.a;
-                container.innerHTML = `<div class="grammar-display">${item.q}</div>`;
+            if (this.currentTopic === "Match") {
+                inputArea.classList.add('hidden');
+                this.renderMatch();
+            } else if (this.currentTopic === "Grammar") {
+                let item = DB.Grammar[Math.floor(Math.random() * DB.Grammar.length)];
+                this.ans = item.a;
+                content.innerHTML = `<div style="font-size:1.2rem; margin: 20px 0;">${item.q}</div>`;
             } else {
-                const words = DATABASE[this.currentTopic];
-                const word = words[Math.floor(Math.random() * words.length)];
-                this.currentAns = word;
-                container.innerHTML = `<div class="word-display">${this.scramble(word)}</div>`;
+                let word = DB[this.currentTopic][Math.floor(Math.random() * DB[this.topic === "Match" ? "Jobs" : this.currentTopic].length)];
+                this.ans = word;
+                content.innerHTML = `<div class="word-display">${this.scramble(word)}</div>`;
             }
         }
 
-        scramble(word) {
-            let a = word.split("").sort(() => Math.random() - 0.5);
-            return a.join("") === word ? this.scramble(word) : a.join("");
+        renderMatch() {
+            const content = document.getElementById('game-content');
+            let items = [...DB.Match].sort(() => 0.5 - Math.random()).slice(0, 3);
+            let left = items.map(i => i.e).sort();
+            let right = items.map(i => i.r).sort();
+            
+            let html = '<div class="match-grid">';
+            left.forEach(word => html += `<div class="match-item" onclick="game.matchClick(this, 'e')">${word}</div>`);
+            right.forEach(word => html += `<div class="match-item" onclick="game.matchClick(this, 'r')">${word}</div>`);
+            html += '</div>';
+            content.innerHTML = html + `<p style="font-size:0.8rem">Соедини слово и перевод!</p>`;
+        }
+
+        matchClick(el, type) {
+            if (this.selectedMatch) {
+                let pair = DB.Match.find(i => (i.e === this.selectedMatch.text && i.r === el.innerText) || (i.r === this.selectedMatch.text && i.e === el.innerText));
+                if (pair) {
+                    this.coins += 10;
+                    this.showFeedback("✅ Верно!", true);
+                    this.next();
+                } else {
+                    this.showFeedback("❌ Попробуй снова", false);
+                }
+                this.selectedMatch = null;
+                document.querySelectorAll('.match-item').forEach(i => i.classList.remove('selected'));
+            } else {
+                this.selectedMatch = { el: el, text: el.innerText };
+                el.classList.add('selected');
+            }
+        }
+
+        scramble(w) {
+            let a = w.split("").sort(() => Math.random() - 0.5);
+            return a.join("") === w ? this.scramble(w) : a.join("");
         }
 
         check() {
-            const val = document.getElementById('answer').value.toLowerCase().trim();
-            const f = document.getElementById('feedback');
-            const cont = document.querySelector('#game');
-
-            if (val === this.currentAns.toLowerCase()) {
+            let val = document.getElementById('answer').value.toLowerCase().trim();
+            if (val === this.ans.toLowerCase()) {
                 this.coins += 20;
-                f.innerText = "✨ Correct! +20 🪙";
-                f.style.color = "var(--secondary)";
-                cont.classList.add('correct-anim');
-                setTimeout(() => cont.classList.remove('correct-anim'), 500);
+                this.showFeedback("✅ Отлично! +20 🪙", true);
                 this.save();
-                setTimeout(() => this.next(), 1200);
+                setTimeout(() => this.next(), 1000);
             } else {
-                f.innerText = "❌ Try again!";
-                f.style.color = "var(--danger)";
+                this.showFeedback("❌ Ошибка!", false);
             }
         }
 
-        hint() {
-            if (this.coins >= 15) {
-                this.coins -= 15;
+        openGift() {
+            if (this.coins >= 50) {
+                this.coins -= 50;
+                let bonus = [10, 100, 200, "XP", "Super Tip"][Math.floor(Math.random() * 5)];
+                alert(`🎁 Вы получили: ${bonus}!`);
+                if (typeof bonus === 'number') this.coins += bonus;
                 this.save();
-                alert(`The first letter is: ${this.currentAns[0].toUpperCase()}`);
             } else {
-                alert("Need 15 coins!");
+                alert("Недостаточно монет!");
             }
+        }
+
+        showFeedback(txt, isWin) {
+            let f = document.getElementById('feedback');
+            f.innerText = txt;
+            f.style.color = isWin ? "var(--success)" : "red";
         }
 
         save() {
-            localStorage.setItem('nebula_coins', this.coins);
+            localStorage.setItem('uni_coins', this.coins);
+            localStorage.setItem('uni_lvl', this.lvl);
             this.updateStats();
         }
 
         updateStats() {
             document.getElementById('m-coins').innerText = this.coins;
             document.getElementById('g-coins').innerText = this.coins;
+            document.getElementById('m-lvl').innerText = this.lvl;
         }
     }
 
-    const game = new EnglishGame();
-
-    // Enter Key
-    document.getElementById('answer').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') game.check();
-    });
+    const game = new EnglishUniverse();
+    document.getElementById('answer').addEventListener('keypress', e => { if(e.key === 'Enter') game.check(); });
 </script>
+
 </body>
 </html>
