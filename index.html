@@ -2,415 +2,147 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎮 English Learning Game PRO 2025</title>
+    <title>English Master Game 2025</title>
+    <!-- Подключаем PyScript для работы Python в браузере -->
+    <link rel="stylesheet" href="pyscript.net" />
+    <script type="module" src="pyscript.net"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary-color: #00dbde;
-            --secondary-color: #fc00ff;
-            --bg-color: #1a1a2e;
-            --card-color: #2a2a40;
-            --text-color: #ffffff;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            min-height: 100vh;
-            color: var(--text-color);
-            padding: 20px;
-            transition: background 0.5s ease;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        /* HEADER С МОНЕТАМИ И СТАТИСТИКОЙ */
-        header {
-            background: rgba(30, 30, 46, 0.95);
-            border-radius: 20px;
-            padding: 20px 30px;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 2px solid #3949ab;
-            backdrop-filter: blur(10px);
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .stats {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-
-        .stat-item {
-            background: rgba(57, 73, 171, 0.3);
-            padding: 12px 24px;
-            border-radius: 15px;
-            border: 1px solid rgba(57, 73, 171, 0.5);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            min-width: 120px;
-            backdrop-filter: blur(5px);
-            transition: all 0.3s ease;
-        }
-
-        .stat-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 219, 222, 0.2);
-        }
-
-        .coin-animation {
-            animation: coinFlip 0.5s ease;
-        }
-
-        @keyframes coinFlip {
-            0% { transform: rotateY(0); }
-            100% { transform: rotateY(360deg); }
-        }
-
-        /* МАГАЗИН */
-        .shop-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            backdrop-filter: blur(5px);
-        }
-
-        .shop-content {
-            background: linear-gradient(135deg, #2a2a40, #1a1a2e);
-            border-radius: 25px;
-            padding: 30px;
-            width: 90%;
-            max-width: 1200px;
-            max-height: 80vh;
-            overflow-y: auto;
-            border: 3px solid var(--primary-color);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-        }
-
-        .shop-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
-        .shop-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 25px;
-            padding: 20px 0;
-        }
-
-        .shop-item {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            padding: 25px;
-            text-align: center;
-            border: 2px solid transparent;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .shop-item:hover {
-            transform: translateY(-10px) scale(1.02);
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 15px 30px rgba(0, 219, 222, 0.2);
-        }
-
-        .shop-item.owned {
-            border-color: #4CAF50;
-        }
-
-        .shop-item.equipped {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 25px var(--primary-color);
-            animation: glow 2s infinite;
-        }
-
-        @keyframes glow {
-            0%, 100% { box-shadow: 0 0 25px var(--primary-color); }
-            50% { box-shadow: 0 0 40px var(--primary-color); }
-        }
-
-        @keyframes matchPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); opacity: 0.5; }
-        }
-
-        .item-price {
-            background: linear-gradient(90deg, #FFD700, #FFA500);
-            color: #000;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            margin-top: 15px;
-            display: inline-block;
-            font-size: 1.1rem;
-        }
-
-        /* ОСНОВНОЕ МЕНЮ */
-        .main-menu {
-            background: rgba(30, 30, 46, 0.95);
-            border-radius: 25px;
-            padding: 40px;
-            border: 2px solid #3949ab;
-            min-height: 500px;
-            backdrop-filter: blur(10px);
-        }
-
-        .mode-selector {
-            display: flex;
-            gap: 20px;
-            margin: 30px 0;
-            flex-wrap: wrap;
-        }
-
-        .mode-card {
-            background: linear-gradient(135deg, rgba(57, 73, 171, 0.3), rgba(33, 150, 243, 0.2));
-            padding: 25px;
-            border-radius: 20px;
-            text-align: center;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-            flex: 1;
-            min-width: 200px;
-            color: white;
-        }
-
-        .mode-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary-color);
-            box-shadow: 0 10px 20px rgba(0, 219, 222, 0.2);
-        }
-
-        .topics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
-        }
-
-        .topic-card {
-            background: linear-gradient(135deg, rgba(57, 73, 171, 0.2), rgba(33, 150, 243, 0.1));
-            padding: 30px;
-            border-radius: 20px;
-            text-align: center;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .topic-card:hover {
-            background: linear-gradient(135deg, rgba(57, 73, 171, 0.4), rgba(33, 150, 243, 0.3));
-            transform: translateY(-8px) scale(1.03);
-            border-color: var(--primary-color);
-            box-shadow: 0 15px 30px rgba(0, 219, 222, 0.2);
-        }
-
-        /* ИГРОВЫЕ РЕЖИМЫ */
-        .game-screen {
-            display: none;
-        }
-
-        .matching-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
-        }
-
-        .word-card {
-            background: linear-gradient(135deg, #2a2a40, #3a3a50);
-            height: 120px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 15px;
-            cursor: pointer;
-            border: 3px solid #3949ab;
-            font-weight: bold;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-            text-align: center;
-            padding: 15px;
-            user-select: none;
-        }
-
-        .word-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary-color);
-            box-shadow: 0 10px 20px rgba(0, 219, 222, 0.2);
-        }
-
-        .word-card.selected {
-            border-color: var(--secondary-color);
-            background: linear-gradient(135deg, #3d3d5c, #4d4d6c);
-            transform: scale(1.05);
-        }
-
-        .word-card.matched {
-            border-color: #4CAF50;
-            background: linear-gradient(135deg, #2e7d32, #388e3c);
-            animation: matchPulse 0.5s ease forwards;
-            pointer-events: none;
-        }
+        body { font-family: 'Arial', sans-serif; background: #f0f2f5; display: flex; justify-content: center; padding: 20px; }
+        #game-container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 600px; text-align: center; }
+        .stats { display: flex; justify-content: space-between; margin-bottom: 20px; font-weight: bold; color: #2c3e50; }
+        .word-box { font-size: 32px; letter-spacing: 5px; margin: 20px 0; color: #3498db; text-transform: uppercase; }
+        input { padding: 10px; font-size: 18px; border: 2px solid #ddd; border-radius: 5px; width: 70%; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; background: #2ecc71; color: white; border: none; border-radius: 5px; margin: 5px; }
+        button:hover { background: #27ae60; }
+        .hint-btn { background: #f1c40f; }
+        .shop { margin-top: 20px; padding-top: 20px; border-top: 2px solid #eee; }
+        .skin-active { border: 3px solid #e74c3c !important; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <div class="logo">🎮 ENGLISH PRO</div>
-        <div class="stats">
-            <div class="stat-item" id="coin-stat">
-                <span>💰</span>
-                <span id="coin-count">150</span>
-            </div>
-            <button class="mode-card" style="padding: 10px 20px; min-width: auto; margin: 0;" onclick="toggleShop(true)">🏪 Магазин</button>
-        </div>
-    </header>
+<div id="game-container">
+    <h1>Learn English 2025</h1>
+    
+    <div class="stats">
+        <div>Монеты: <span id="coins">0</span> 🪙</div>
+        <div>Тема: <span id="current-topic">Jobs</span></div>
+    </div>
 
-    <main class="main-menu" id="menu-view">
-        <h2>Выберите режим игры</h2>
-        <div class="mode-selector">
-            <div class="mode-card" onclick="alert('Скоро!')">
-                <div style="font-size: 2rem;">⚡</div>
-                <h3>Спринт</h3>
-            </div>
-            <div class="mode-card" style="border-color: var(--primary-color)">
-                <div style="font-size: 2rem;">🧩</div>
-                <h3>Пары</h3>
-            </div>
-        </div>
+    <div id="quest-text">Разгадай слово (анаграмма):</div>
+    <div id="display-word" class="word-box">LOADING...</div>
 
-        <h2>Темы обучения</h2>
-        <div class="topics-grid" id="topics-list">
-            <!-- Темы генерируются JS -->
-        </div>
-    </main>
+    <input type="text" id="user-input" placeholder="Введите ответ...">
+    <br>
+    <button onclick="check_answer()">Проверить</button>
+    <button class="hint-btn" onclick="get_hint()">Подсказка (10 🪙)</button>
+    
+    <div id="message" style="margin-top: 15px; font-weight: bold;"></div>
 
-    <div class="game-screen" id="game-view">
-        <button class="mode-card" style="padding: 10px 20px; min-width: auto;" onclick="showMenu()">⬅ Назад</button>
-        <h1 id="current-topic-title" style="margin-top: 20px; text-align: center;"></h1>
-        <div class="matching-grid" id="game-grid"></div>
+    <div class="shop">
+        <h3>Магазин скинов</h3>
+        <button onclick="buy_skin('Classic', 0)">Classic (Free)</button>
+        <button onclick="buy_skin('Neon', 50)">Neon (50 🪙)</button>
+        <button onclick="buy_skin('Dark', 100)">Dark Mode (100 🪙)</button>
     </div>
 </div>
 
-<!-- МАГАЗИН -->
-<div class="shop-modal" id="shop-modal">
-    <div class="shop-content">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h2>🏪 Магазин</h2>
-            <button class="mode-card" style="padding: 10px 20px; min-width: auto;" onclick="toggleShop(false)">Закрыть</button>
-        </div>
-        <div class="shop-grid" id="shop-items-grid">
-            <!-- Предметы магазина -->
-        </div>
-    </div>
-</div>
+<script type="py">
+import random
+from pyscript import document
 
-<script>
-    let coins = 150;
-    const topics = [
-        { name: 'Животные', icon: '🦁', words: { 'Lion': 'Лев', 'Cat': 'Кот', 'Dog': 'Собака', 'Wolf': 'Волк' } },
-        { name: 'Еда', icon: '🍕', words: { 'Apple': 'Яблоко', 'Pizza': 'Пицца', 'Milk': 'Молоко', 'Bread': 'Хлеб' } }
-    ];
+# База данных слов и заданий
+DATA = {
+    "Jobs": ["engineer", "developer", "architect", "nurse", "scientist", "accountant", "lawyer"],
+    "Environment": ["pollution", "recycling", "sustainability", "wildlife", "atmosphere", "glacier"],
+    "Tourism": ["itinerary", "sightseeing", "destination", "souvenir", "passport", "adventure"],
+    "Weather": ["thunderstorm", "humidity", "forecast", "blizzard", "hurricane", "drought"],
+    "Grammar": [
+        {"q": "I ___ (to be) a student", "a": "am"},
+        {"q": "She ___ (to go) to work every day", "a": "goes"},
+        {"q": "They ___ (to watch) a movie now", "a": "are watching"},
+        {"q": "___ apple a day keeps the doctor away", "a": "an"}
+    ]
+}
 
-    function initMenu() {
-        const list = document.getElementById('topics-list');
-        topics.forEach(t => {
-            const card = document.createElement('div');
-            card.className = 'topic-card';
-            card.innerHTML = `<h1>${t.icon}</h1><h3>${t.name}</h3>`;
-            card.onclick = () => startLevel(t);
-            list.appendChild(card);
-        });
-    }
+class Game:
+    def __init__(self):
+        self.coins = 0
+        self.current_word = ""
+        self.current_topic = ""
+        self.correct_answer = ""
+        self.mode = "anagram" # anagram or grammar
+        self.next_round()
 
-    let selected = [];
-    function startLevel(topic) {
-        document.getElementById('menu-view').style.display = 'none';
-        document.getElementById('game-view').style.display = 'block';
-        document.getElementById('current-topic-title').innerText = topic.name;
+    def next_round(self):
+        # Случайный выбор темы
+        self.current_topic = random.choice(list(DATA.keys()))
+        document.getElementById("current-topic").innerText = self.current_topic
         
-        const grid = document.getElementById('game-grid');
-        grid.innerHTML = '';
-        let cards = [];
-        Object.entries(topic.words).forEach(([eng, rus]) => {
-            cards.push({ text: eng, pair: eng }, { text: rus, pair: eng });
-        });
-        cards.sort(() => Math.random() - 0.5);
+        if self.current_topic == "Grammar":
+            item = random.choice(DATA["Grammar"])
+            self.correct_answer = item["a"]
+            display_text = item["q"]
+            document.getElementById("quest-text").innerText = "Заполни пропуск:"
+        else:
+            self.correct_answer = random.choice(DATA[self.current_topic])
+            # Перемешивание букв
+            scrambled = list(self.correct_answer)
+            random.shuffle(scrambled)
+            display_text = "".join(scrambled)
+            document.getElementById("quest-text").innerText = "Разгадай слово:"
 
-        cards.forEach(d => {
-            const card = document.createElement('div');
-            card.className = 'word-card';
-            card.innerText = d.text;
-            card.onclick = () => {
-                if (selected.length < 2 && !card.classList.contains('selected')) {
-                    card.classList.add('selected');
-                    selected.push({ el: card, pair: d.pair });
-                    if (selected.length === 2) {
-                        if (selected[0].pair === selected[1].pair) {
-                            selected.forEach(s => s.el.className = 'word-card matched');
-                            coins += 20;
-                            document.getElementById('coin-count').innerText = coins;
-                        } else {
-                            const s1 = selected[0].el, s2 = selected[1].el;
-                            setTimeout(() => { s1.classList.remove('selected'); s2.classList.remove('selected'); }, 500);
-                        }
-                        selected = [];
-                    }
-                }
-            };
-            grid.appendChild(card);
-        });
-    }
+        document.getElementById("display-word").innerText = display_text
+        document.getElementById("user-input").value = ""
 
-    function toggleShop(show) {
-        document.getElementById('shop-modal').style.display = show ? 'flex' : 'none';
-    }
+    def check(self, user_val):
+        if user_val.lower().strip() == self.correct_answer.lower():
+            self.coins += 15
+            self.update_ui("Правильно! +15 монет")
+            self.next_round()
+        else:
+            self.update_ui("Ошибка, попробуй еще раз!", "#e74c3c")
 
-    function showMenu() {
-        document.getElementById('menu-view').style.display = 'block';
-        document.getElementById('game-view').style.display = 'none';
-    }
+    def update_ui(self, msg, color="#2ecc71"):
+        document.getElementById("coins").innerText = str(self.coins)
+        msg_el = document.getElementById("message")
+        msg_el.innerText = msg
+        msg_el.style.color = color
 
-    initMenu();
+game = Game()
+
+def check_answer(event=None):
+    val = document.getElementById("user-input").value
+    game.check(val)
+
+def get_hint(event=None):
+    if game.coins >= 10:
+        game.coins -= 10
+        hint = f"Первая буква: {game.correct_answer[0]}"
+        game.update_ui(hint, "#f39c12")
+    else:
+        game.update_ui("Недостаточно монет!", "#e74c3c")
+
+def buy_skin(name, price):
+    if game.coins >= price:
+        if name == "Neon":
+            document.getElementById("game-container").style.background = "#00ffcc"
+        elif name == "Dark":
+            document.getElementById("game-container").style.background = "#2c3e50"
+            document.getElementById("game-container").style.color = "white"
+        else:
+            document.getElementById("game-container").style.background = "white"
+            document.getElementById("game-container").style.color = "black"
+        
+        if price > 0: game.coins -= price
+        game.update_ui(f"Скин {name} применен!")
+    else:
+        game.update_ui("Нужно больше золота!", "#e74c3c")
+
+# Экспортируем функции в глобальную область JS
+window.check_answer = check_answer
+window.get_hint = get_hint
+window.buy_skin = buy_skin
 </script>
 
 </body>
